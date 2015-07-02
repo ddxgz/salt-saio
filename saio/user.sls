@@ -18,3 +18,5 @@ swift:
     file.append:
         - text:
             - "swift ALL=(ALL) NOPASSWD:ALL"
+
+
