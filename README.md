@@ -5,10 +5,72 @@ Use SaltStack to install Swift-All-In-One.
 
 Currently only works for Ubuntu 12.04 or above.
 
-Steps
+> Notice: This salt installs SAIO to the step 'remakerings', the rest is need to do by yourself.
+
+There are two ways here to install saio with saltstack:
+- Normal way
+- Vagrant
+
+Normal way 
 ----
-1. Install salt
-2. Copy sls and run salt
+1. Install salt-minion on the node you want to install Swift on
+
+```
+wget -O - http://bootstrap.saltstack.org | sudo sh
+
+```
+
+2. Edit /etc/salt/minion, set master ip to the node that you want to use as a master, and set id to the name you want to call the swift node, like 'minion1'
+
+```
+master: 10.200.*.*
+id: minion1
+```
+
+3. Start the minion
+
+```
+sudo service salt-minion start|restart
+```
+
+4. Install salt-master on the node you want to control the installation, it can also be on the same node as minion
+
+```
+curl -L http://bootstrap.saltstack.org | sudo sh -s -- -M -N
+```
+
+5. Edit /etc/salt/master, add this:
+
+```
+file_roots:
+  base:
+    - /srv/salt
+```
+
+6. Start the master
+
+```
+sudo service salt-master start|restart
+```
+
+7. Accept minion's pub key
+
+```
+sudo salt-key -a minion1
+sudo salt minion1 test.ping
+```
+
+If test.ping returns 'True', congratulations!
+
+8. Copy the ./salt to master, and run salt
+
+```
+sudo salt minion1 state.highstate
+```
+
+Vagrant 
+----
+todo...
 
 
 SAIO install procedure
@@ -21,5 +83,4 @@ SAIO install procedure
 6. Start memcached
 7. Set up rsyslog
 8. Config each node
-9. Stup up scripts
-10. Tests
+9. Stup up scripts and makerings
