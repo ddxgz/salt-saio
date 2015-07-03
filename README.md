@@ -19,7 +19,7 @@ Normal way
 wget -O - http://bootstrap.saltstack.org | sudo sh
 
 ```
-If the network connection is not good, use bootstrap-salt.sh instead.
+If there is any problem with the network connection, use bootstrap-salt.sh instead.
 
 2. Edit /etc/salt/minion, set master ip to the node that you want to use as a master, and set id to the name you want to call the swift node, like 'minion1'
 
