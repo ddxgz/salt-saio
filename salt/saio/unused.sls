@@ -6,6 +6,27 @@ base:
         - saio.rsync
         - saio.rsyslog
         - saio.nodes
+
+
+# sdb1:
+#     cmd.run:
+#         - user: swift
+#         - creates: /mnt/sdb1
+#         - require:
+#             - file: /etc/fstab
+
+# /mnt/sdb1:
+#     # cmd.run:
+#     #     - user: swift
+#     #     - creates: /mnt/sdb1
+#     #     - require:
+#     #         - file: /etc/fstab  
+#     mount.mounted:
+#         - device: /mnt/sdb1
+#         - mkmnt: True
+#         - fstype: xfs
+#         - require:
+#             - file: /etc/fstab  
         
 
 /etc/rc.local:

@@ -1,5 +1,5 @@
 base:
-    '*':
+    'minion-saio':
         - saio.user
         - saio.packages
         - saio.device

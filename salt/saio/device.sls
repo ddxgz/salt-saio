@@ -41,29 +41,35 @@ mkfs:
             - cmd: truncate
 
 
-/etc/fstab:
-    file.append:
-        - name: /etc/fstab
-        - text:
-            - "/srv/swift-disk /mnt/sdb1 xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0"
+# /etc/fstab:
+#     file.append:
+#         - name: /etc/fstab
+#         - text:
+#             - "/srv/swift-disk /mnt/sdb1 xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0"
+#         - require:
+#             - cmd: mkfs
+
+
+# /mnt/sdb1:
+#     cmd.wait:
+#         - user: swift
+#         - group: swift
+#         - name: sudo mkdir /mnt/sdb1;sudo mount /mnt/sdb1
+#         - watch:
+#             - file: /etc/fstab  
+
+
+/mnt/sdb1:
+    mount.mounted:
+        - device: /srv/swift-disk
+        - mkmnt: True
+        - fstype: xfs
+        - opts: nobootwait,noatime,nodiratime,nobarrier,logbufs=8
+        - dump: 0
+        - pass_num: 0
         - require:
             - cmd: mkfs
 
-
-sdb1:
-    cmd.run:
-        - user: swift
-        - creates: /mnt/sdb1
-        - require:
-            - file: /etc/fstab
-
-/mnt/sdb1:    
-    mount.mounted:
-        - user: swift
-        - device: /mnt/sdb1
-        - fstype: xfs
-        - require:
-            - cmd: sdb1
 
 {% for i in ['1', '2', '3', '4'] %}
 /mnt/sdb1/{{i}}:

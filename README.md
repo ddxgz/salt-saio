@@ -19,6 +19,7 @@ Normal way
 wget -O - http://bootstrap.saltstack.org | sudo sh
 
 ```
+If the network connection is not good, use bootstrap-salt.sh instead.
 
 2. Edit /etc/salt/minion, set master ip to the node that you want to use as a master, and set id to the name you want to call the swift node, like 'minion1'
 
@@ -39,12 +40,12 @@ sudo service salt-minion start|restart
 curl -L http://bootstrap.saltstack.org | sudo sh -s -- -M -N
 ```
 
-5. Edit /etc/salt/master, add this:
+5. Edit /etc/salt/master, add file_roots to /path/to/top.sls, like
 
 ```
 file_roots:
   base:
-    - /srv/salt
+    - /home/pc/saio-setup/salt
 ```
 
 6. Start the master
