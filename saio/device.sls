@@ -11,15 +11,35 @@ create-srv:
         - require:
             - user: swift
 
+# truncate:
+#     cmd.script:
+#         - source: salt://saio/create-disk.sh
+#         - name: truncate
+#         - user: swift
+#         - group: swift
+#         - watch:
+#             - pkg: common-packages
+#             - cmd: create-srv
+
+
 truncate:
-    cmd.script:
-        - source: salt://saio/create-disk.sh
-        - name: truncate
+    cmd.wait:
+        - name: sudo truncate -s 1GB /srv/swift-disk
         - user: swift
         - group: swift
         - watch:
             - pkg: common-packages
             - cmd: create-srv
+
+
+mkfs:
+    cmd.wait:
+        - name: sudo mkfs.xfs /srv/swift-disk
+        - user: swift
+        - group: swift
+        - watch:
+            - cmd: truncate
+
 
 /etc/fstab:
     file.append:
@@ -27,7 +47,7 @@ truncate:
         - text:
             - "/srv/swift-disk /mnt/sdb1 xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0"
         - require:
-            - cmd: truncate
+            - cmd: mkfs
 
 
 sdb1:
