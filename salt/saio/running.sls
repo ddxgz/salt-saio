@@ -29,7 +29,8 @@ chmod_bin:
   cmd.run:
       - user: swift
       - group: swift
-      - name:  echo "export SAIO_BLOCK_DEVICE=/srv/swift-disk" >> $HOME/.bashrc
+      # - name:  echo "export SAIO_BLOCK_DEVICE=/srv/swift-disk" >> $HOME/.bashrc
+      - name:  echo "export SAIO_BLOCK_DEVICE=/srv/swift-disk" >> /home/swift/.bashrc
       - require:
         - file: /home/swift/bin/resetswift
 
@@ -45,7 +46,8 @@ test_env:
   cmd.run:
     - user: swift
     - group: swift
-    - name:  echo "export SWIFT_TEST_CONFIG_FILE=/etc/swift/test.conf" >> $HOME/.bashrc
+    # - name:  echo "export SWIFT_TEST_CONFIG_FILE=/etc/swift/test.conf" >> $HOME/.bashrc
+    - name:  echo "export SWIFT_TEST_CONFIG_FILE=/etc/swift/test.conf" >> /home/swift/.bashrc
     - require:
       - file: /etc/swift/test.conf
 
@@ -54,7 +56,8 @@ path_env:
   cmd.run:
     - user: swift
     - group: swift
-    - name:  echo "export PATH=${PATH}:$HOME/bin" >> $HOME/.bashrc
+    # - name:  echo "export PATH=${PATH}:$HOME/bin" >> $HOME/.bashrc
+    - name:  echo "export PATH=${PATH}:$HOME/bin" >> /home/swift/.bashrc
     - require:
       - cmd: test_env
 
@@ -65,7 +68,8 @@ source_env:
     - group: swift
     - cwd: /home/swift
     - shell: /bin/bash
-    - name:  source $HOME/.bashrc
+    # - name:  source $HOME/.bashrc
+    - name:  source /home/swift/.bashrc
     - require:
       - cmd: path_env
 

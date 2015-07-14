@@ -23,11 +23,11 @@ create-srv:
 
 
 truncate:
-    cmd.wait:
+    cmd.run:
         - name: sudo truncate -s 1GB /srv/swift-disk
         - user: swift
         - group: swift
-        - watch:
+        - require:
             - pkg: common-packages
             - cmd: create-srv
 
@@ -132,21 +132,21 @@ https://github.com/openstack/python-swiftclient.git:
         - target: /home/swift/python-swiftclient
 
 requirements-swiftclient:
-    cmd.wait:
+    cmd.run:
         - user: swift
         - group: swift
         - cwd: /home/swift/python-swiftclient
         - name: sudo pip install -r requirements.txt
-        - watch:
+        - require:
             - git: https://github.com/openstack/python-swiftclient.git
 
 setup-swiftclient:
-    cmd.wait:
+    cmd.run:
         - user: swift
         - group: swift
         - cwd: /home/swift/python-swiftclient
         - name: sudo python setup.py develop
-        - watch:
+        - require:
             - cmd: requirements-swiftclient
 
 
@@ -157,28 +157,28 @@ https://github.com/openstack/swift.git:
         - target: /home/swift/swift
 
 requirements-swift:
-    cmd.wait:
+    cmd.run:
         - user: swift
         - group: swift
         - cwd: /home/swift/swift
         - name: sudo pip install -r requirements.txt
-        - watch:
+        - require:
             - git: https://github.com/openstack/swift.git
 
 setup-swift:
-    cmd.wait:
+    cmd.run:
         - user: swift
         - group: swift
         - cwd: /home/swift/swift
         - name: sudo python setup.py develop
-        - watch:
+        - require:
             - cmd: requirements-swift
 
 requirements-test:
-    cmd.wait:
+    cmd.run:
         - user: swift
         - group: swift
         - cwd: /home/swift/swift
         - name: sudo pip install -r test-requirements.txt
-        - watch:
+        - require:
             - cmd: setup-swift

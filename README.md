@@ -64,11 +64,40 @@ Normal way
 
   If test.ping returns 'True', congratulations!
 
-8. Copy the ./salt to master, and run salt
+8. Copy the ./salt to master, go to saio-setup/salt/, edit the 'top.sls' file, and change the minion name to the one you set (in this case is minion1), like:
+
+  ```
+  base:
+      'minion1':
+          - saio.user
+          - saio.packages
+          - saio.device
+          - saio.rsync
+          - saio.rsyslog
+          - saio.nodes
+          - saio.running
+  ```
+  or you can just set the 'minion1' to '*' to match all the minion nodes.
+
+  Since this installation will create a user and group 'swift:swift', so it needs to confirm that there are not existed uid and gid the same to the ones in 'user.sls'. Otherwise, you need to change the uid and gid in 'user.sls':
+  ```
+  swift:
+    user.present:
+        ......
+        - uid: 1001
+        - gid: 1001
+        ......
+    group.present:
+        - gid: 1001
+        ......
+  ```
+
+9. Copy the ./salt to master, go to salt/ (where top.sls is) and run salt:
 
   ```
   sudo salt minion1 state.highstate
   ```
+  Sometimes there will be errors or warmings, run salt again might get errors away, if the error info tells you that the problem is related to PyECLib, then you need to install its pre-requisites, please see: https://bitbucket.org/kmgreen2/pyeclib or http://docs.openstack.org/developer/swift/overview_erasure_code.html#pyeclib-external-erasure-code-library  
 
 Vagrant
 ----
