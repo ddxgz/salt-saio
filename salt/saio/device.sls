@@ -125,35 +125,35 @@ mkfs:
             - file: /etc/rc.local.bk
 
 
-https://github.com/openstack/python-swiftclient.git:
-    git.latest:
-        - user: swift
-        - rev: stable/kilo
-        - target: /home/swift/python-swiftclient
+# https://github.com/openstack/python-swiftclient.git:
+#     git.latest:
+#         - user: swift
+#         - rev: stable/kilo
+#         - target: /home/swift/python-swiftclient
 
-requirements-swiftclient:
-    cmd.run:
-        - user: swift
-        - group: swift
-        - cwd: /home/swift/python-swiftclient
-        - name: sudo pip install -r requirements.txt
-        - require:
-            - git: https://github.com/openstack/python-swiftclient.git
+# requirements-swiftclient:
+#     cmd.run:
+#         - user: swift
+#         - group: swift
+#         - cwd: /home/swift/python-swiftclient
+#         - name: sudo pip install -r requirements.txt
+#         - require:
+#             - git: https://github.com/openstack/python-swiftclient.git
 
-setup-swiftclient:
-    cmd.run:
-        - user: swift
-        - group: swift
-        - cwd: /home/swift/python-swiftclient
-        - name: sudo python setup.py develop
-        - require:
-            - cmd: requirements-swiftclient
+# setup-swiftclient:
+#     cmd.run:
+#         - user: swift
+#         - group: swift
+#         - cwd: /home/swift/python-swiftclient
+#         - name: sudo python setup.py develop
+#         - require:
+#             - cmd: requirements-swiftclient
 
 
 https://github.com/openstack/swift.git:
     git.latest:
         - user: swift
-        - rev: stable/kilo
+        - rev: stable/juno
         - target: /home/swift/swift
 
 requirements-swift:
